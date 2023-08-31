@@ -2,13 +2,62 @@
 <html lang="en">
     
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">    <meta charset="UTF-8">
+    <style>
+        /* Styling for the water level bar */
+        .water-level-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background-color: lightblue;
+            transition: height 0.5s ease; /* Smooth transition animation */
+        }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Level Monitoring</title>
 </head>
+
 <body>
-    <h1>Water Level</h1>
-    <p>Current water level: {{ water_level }} cm</p >
+    <h1>Water Level Monitoring</h1>
+    <p>ADC: <span id="adc">N/A</span></p>
+    <p>Voltage: <span id="voltage">N/A</span></p>
+    <p>Resistance: <span id="resistance">N/A</span></p>
+    <p>Water Level: <span id="water_level">N/A</span></p>
+
+    <div class="water-level-bar" id="water_level_bar"></div>
+    <script>
+        // Function to update the values on the webpage
+        function updateValues(data) {
+            const waterLevelBar = document.getElementById('water_level_bar');
+            waterLevelBar.style.height = `${data.water_level}%`; // Adjust height based on water level
+            document.getElementById('adc').textContent = data.adc;
+            document.getElementById('voltage').textContent = data.voltage;
+            document.getElementById('resistance').textContent = data.resistance;
+            document.getElementById('water_level').textContent = data.water_level;
+        }
+
+        // Fetch data from the server and update values
+        async function fetchDataAndDisplay() {
+            try {
+                const response = await fetch('/get_current_data'); // Change this to your server route
+                if (response.ok) {
+                    const data = await response.json();
+                    updateValues(data);
+                } else {
+                    console.error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Update values initially and then set up periodic updates
+        fetchDataAndDisplay();
+        setInterval(fetchDataAndDisplay, 5000); // Update every 5 seconds (adjust as needed)
+    </script>
+
 </body>
 </html>
+

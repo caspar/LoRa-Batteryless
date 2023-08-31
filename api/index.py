@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify, render_template
 import base64
 
 app = Flask(__name__)
@@ -10,13 +10,9 @@ current_water_level = "N/A"
 
 @app.route('/')
 def index():
-    return render_template_string("""
-        <h1>ADC: {{ adc }}</h1>
-        <h1>Voltage: {{ voltage }} V</h1>
-        <h1>Resistance: {{ resistance }} ohms</h1>
-        <h1>Water Level: {{ water_level }} cm</h1>
-    """, adc=current_adc, voltage=current_voltage, resistance=current_resistance, water_level=current_water_level)
-
+    # serve index template with variables through jinja templating
+    return render_template('index.html', adc=current_adc, voltage=current_voltage, resistance=current_resistance, water_level=current_water_level)
+              
 @app.route('/receive_ttn_data', methods=['POST'])
 def receive_ttn_data():
     global current_adc, current_voltage, current_resistance, current_water_level
