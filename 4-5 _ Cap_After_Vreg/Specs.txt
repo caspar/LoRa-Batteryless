@@ -1,0 +1,20 @@
+The power supply runs @ 5V for t milliseconds.
+
+The voltage regulator is set to 3.3 +/- 0.01V.
+
+Data is saved in the order: second, V_supply, V_in, I_other, I_in
+
+Where...
+
+V_supply is the voltage from the power supply.
+V_in is the voltage at the 3V3 pin of the LoRaWAN module.
+I_other is the voltage representing current from all connections to GND except that of the LoRaWAN module.
+I_in is the voltage representing current from the GND pin of the LoRaWAN module to GND.
+
+Resistance between LoRaWAN module GND pin and true GND: 1.071 +/- 0.0005 Ohms.
+
+Resistance between other components and GND: 0.212 +/- 0.001 Ohms.
+
+
+
+
